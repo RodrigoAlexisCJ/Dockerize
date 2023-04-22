@@ -1,0 +1,121 @@
+# Dockerize an Angular Project 
+## Installation
+1. Download and install **Node.js** via this [link](https://nodejs.org/es/download/)
+
+!!! To verify if the installation was correct, type in your Command Prompt(Windows) to check the **Node.js**  and **npm** version
+
+``` 
+node --version
+```
+and
+``` 
+npm --version
+```
+2. Donwload and install **Angular-Cli**, visit this [link](https://cli.angular.io/) or type in your Command Prompt (Windows)
+
+``` 
+npm install -g @angular/cli
+```
+!!!!!!If you want a different version of **Angular-Cli** you can type instead
+``` 
+npm install -g @angular/cli@{version}
+
+example
+
+npm install -g @angular/cli@7.0.3
+```
+
+!!! To verify if the installation was correct, type in your Command Prompt(Windows) to check the **Angular-Cli** version
+
+``` 
+ng version
+```
+3. Download and install an Editor:
+- __[Atom](https://atom.io/)__
+- __[Visual Studio Code](https://code.visualstudio.com/docs)__
+- __[Sublime Text](https://www.sublimetext.com)__
+
+## Angular 
+``` 
+ng help
+```
+- Create a new project: select your folder file and type on your Command Prompt(Windows)
+``` 
+ng new {file-name}
+example
+ng new todo
+```
+- Build and run an **Angular** application (you need to be inside the Project folder)
+``` 
+ng serve
+```
+!!!!!! To stop an **Angular** Application, type Ctrl+C to end the ongoing process (Windows)
+
+- To check if exist any coding standar violation type `ng lint` on your Command Prompt(Windows)
+- If you type `ng build` on your Command Prompt(Windows), it creates files that make easy the deployment on a web server, like test enrollment, production, etc. (so you don´t need to attatch all the files to make run the **Angular** Application)
+- Type `ng test` to run the unit tests on the **Angula** Application
+- Type `ng e2e` to run the entire **Angular** Application
+- Type `ng generate component {component name}` to create a new component inside your **Angular** Application
+example
+``` 
+ng generate component welcome 
+```
+!!! This commando don´t have rollback so you need to be a 100% that everything is right before execute it 
+
+## Dockerizing an Angular Project (example)
+- Create a new project (demo-app): select your folder file and type on your Command Prompt(Windows)
+``` 
+ng new demo-app
+```
+- Build and run your **Angular** application (you need to be inside the demo-app folder) to verify if it is running
+``` 
+ng serve
+```
+!!!!!! To stop your **Angular** Application, type Ctrl+C to end the ongoing process (Windows)
+- Build your **Angular** application
+``` 
+ng build
+```
+- Create a Dockerfile inside your **Angular** project folder (demo-app) and type
+``` 
+# Use official node image as the base image
+FROM node:latest as build
+
+#set the working directory
+WORKDIR /app
+
+#
+COPY . .
+
+RUN npm install
+
+RUN npm run build --prod
+
+FROM nginx:latest
+
+COPY --from=build /app/dist/{app-name} /usr/share/nginx/html
+
+EXPOSE {port}
+```
+- In this case {app-name} is demo-app and {port} is 80:
+
+``` 
+# Use official node image as the base image
+FROM node:latest as build
+
+#set the working directory
+WORKDIR /app
+
+#
+COPY . .
+
+RUN npm install
+
+RUN npm run build --prod
+#stage 2
+FROM nginx:latest
+
+COPY --from=build /app/dist/demo-app /usr/share/nginx/html
+
+EXPOSE 80
+```

@@ -78,44 +78,75 @@ ng build
 ```
 - Create a Dockerfile inside your **Angular** project folder (demo-app) and type
 ``` 
+# Stage 1
+
 # Use official node image as the base image
 FROM node:latest as build
 
-#set the working directory
+# Set the working directory
 WORKDIR /app
 
-#
+# Add the set course
 COPY . .
 
+# Install all the dependencies
 RUN npm install
 
 RUN npm run build --prod
 
+# Stage 2
 FROM nginx:latest
 
+# Use official nginx image as the base image
 COPY --from=build /app/dist/{app-name} /usr/share/nginx/html
 
+# Select the port
 EXPOSE {port}
 ```
 - In this case {app-name} is demo-app and {port} is 80:
 
 ``` 
+# Stage 1
+
 # Use official node image as the base image
 FROM node:latest as build
 
-#set the working directory
+# Set the working directory
 WORKDIR /app
 
-#
+# Add the set course
 COPY . .
 
+# Install all the dependencies
 RUN npm install
 
 RUN npm run build --prod
-#stage 2
+
+# Stage 2
 FROM nginx:latest
 
+# Use official nginx image as the base image
 COPY --from=build /app/dist/demo-app /usr/share/nginx/html
 
+# Select the port
 EXPOSE 80
 ```
+### Building a Docker Image on Command Prompt(Windows)
+- Build your Application Image, type on your Command Prompt(Windows)
+ ```
+docker build -t {dockerhub_name}/{image_name}:{tag dockerfile_location}
+#Example
+docker build -t spikanor1320/demo-app:latest
+# Or
+docker build -t spikanor1320/demo-app
+ ```
+!!!!!! To build a **Docker** Image of your **Angular** project you need a **Docker-hub** account, so create a new user or login into __[Docker-hub](https://hub.docker.com/)__
+- Once your docker image build is finished, run your image into a **Container**, type on your Command Prompt(Windows)
+ ```
+docker run -d -it -p 80:80/tcp --name demo-app {dockerhub_name}/{image_name}:{tag dockerfile_location}
+#Example
+docker run -d -it -p 80:80/tcp --name demo-app spikanor1320/demo-app:latest
+ ```
+ ### Building a Docker Image in an Editor (VisualStudioCode)
+ - Open your Project folder into your Editor (VisualStudioCode) and open your Dockerfile
+![Minion](Images/image1.png)

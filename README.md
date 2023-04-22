@@ -149,4 +149,18 @@ docker run -d -it -p 80:80/tcp --name demo-app spikanor1320/demo-app:latest
  ```
  ### Building a Docker Image in an Editor (VisualStudioCode)
  - Open your Project folder into your Editor (VisualStudioCode) and open your Dockerfile
-![Minion](Images/image1.png)
+![Dock1](Images/image1.png)
+- Right click into your Dockerfile and click into Build Image...
+![Dock2](Images/image2.png)
+- Wait until your Build Image is done
+![Dock3](Images/image3.png)
+- And open your **Docker Desktop** into the Image section
+![Dock4](Images/image4.png)
+- Click on Run and Create a Run new container {container-name} -> Demo and {port}-> 8080
+![Dock5](Images/image5.png)
+
+## Helpfull Resources
+__[Link 1](https://plainenglish.io/blog/how-to-dockerize-angular-application-3cd67e963832#3-build-the-containers)__
+__[Link 2](https://medium.com/codex/dockerize-angular-application-69e7503d1816)__
+__[You Tube video](https://www.youtube.com/watch?v=GXf0y_nUIZE)__
+
